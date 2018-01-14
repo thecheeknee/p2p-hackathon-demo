@@ -34,7 +34,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <iron-form is="iron-form" id="addOrder">
         <form>
           <div class="formelement">
-            <paper-input name="userid" value="{{frmObj.userid}}" always-float-label label="Your User ID" error-message="UserID Required" required auto-validate allowed-pattern="[a-zA-Z0-9\.\_\-]"></paper-input>
+            <paper-input name="userid" value="{{frmObj.userId}}" always-float-label label="Your User ID" error-message="UserID Required" required auto-validate allowed-pattern="[a-zA-Z0-9\.\_\-]"></paper-input>
           </div>
           <div class="formelement lfloat">
             <paper-dropdown-menu label="From" on-iron-select="_fromCurrSelected" value="{{frmObj.from}}">
@@ -59,7 +59,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <paper-input name="amount" value="{{frmObj.toSell}}" always-float-label label="Amount to convert" error-message="Amount Value is required" required auto-validate allowed-pattern="[0-9]"></paper-input>
             </div>
           <div class="formelement">
-              <paper-dropdown-menu label="Your Country"  on-iron-select="_countrySelected" value="{{frmObj.origincountry}}">
+              <paper-dropdown-menu label="Your Country"  on-iron-select="_countrySelected" value="{{frmObj.originCountry}}">
                 <paper-listbox slot="dropdown-content" name="from" selected="0">
                     <template is="dom-repeat" items="{{country}}">
                         <paper-item value="{{item}}">{{item}}</paper-item>
@@ -72,6 +72,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </div>
         </form>
       </iron-form>
+      <iron-ajax 
+        id="postData"
+        url="http://10.117.189.59:8080/api/forex"
+        method="post"
+        body= '{{frmObj}}'
+        handle-as="json"
+        content-type="application/json"
+        on-response="handleResponse"
+        debounce-duration="300">
+      </iron-ajax>
     </div>
   </template>
 
@@ -114,15 +124,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _countrySelected(e) {
         var selectedItem = e.target.selectedItem;
         if (selectedItem) {
-            this.frmObj.origincountry = selectedItem.value;
+            this.frmObj.originCountry = selectedItem.value;
         }
       }
       submitForm(){
         if(this.$.addOrder.validate()){
-            console.log( this.frmObj );
-        }else{
-            console.log(false);
+            //generate current timestamp
+            //this.frmObj.toSell
+            this.frmObj.toSell = Number(this.frmObj.toSell); 
+            var d = new Date();
+            var dt = d.getFullYear() + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + ('0' + d.getDate()).slice(-2) + "T" + ('0' + d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2) + ":" + ('0' + d.getSeconds())+'Z';
+            this.frmObj.timePlaced = dt;
+            console.log(this.frmObj);
+            this.frmObj = JSON.parse(JSON.stringify(this.frmObj));
+            //this.$.postData.body = obj;
+            console.log(this.$.postData.body);
+            this.$.postData.generateRequest();
         }
+      }
+      handleResponse(){
+
       }
     }
 
