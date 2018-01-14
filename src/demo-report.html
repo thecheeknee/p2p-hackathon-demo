@@ -9,6 +9,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/google-apis/google-apis.html">
+<link rel="import" href="../bower_components/google-chart/google-chart.html">
+<link rel="import" href="../bower_components/google-chart/google-chart-loader.html">
+<link rel="import" href="../bower_components/google-chart/google-chart-styles.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="demo-report">
@@ -22,16 +27,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <div class="card">
-      <div class="circle">3</div>
-      <h1>View Three</h1>
-      <p>Modus commodo minimum eum te, vero utinam assueverit per eu.</p>
-      <p>Ea duis bonorum nec, falli paulo aliquid ei eum.Has at minim mucius aliquam, est id tempor laoreet.Pro saepe pertinax ei, ad pri animal labores suscipiantur.</p>
+      <h1>Order Report</h1>
+      <iron-ajax auto url="../src/data.json" handle-as="json" last-response="{{users}}"></iron-ajax>
+      <google-chart
+      type='pie'
+      options='{"title": "Processed Order"}'
+      cols='{{pie.cols}}'
+      rows='{{pie.rows}}'>
+    </google-chart>
+    
+    <google-chart-loader id="loader" type="[[type]]"></google-chart-loader>
+    <div id="chartdiv"></div>
+
+      
     </div>
   </template>
 
   <script>
     class DemoReport extends Polymer.Element {
       static get is() { return 'demo-report'; }
+      static get properties(){
+        return{
+         pie:{
+          type: Object,
+          value:{
+            rows:[["UK", 10],["USA", 20],["AUS", 50]],
+            cols:[{"label": "Data", "type": "string"},{"label": "Value", "type": "number"}]
+          }
+         } 
+        }
+      }
     }
 
     window.customElements.define(DemoReport.is, DemoReport);

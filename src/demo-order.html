@@ -30,9 +30,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <h1>Order History</h1>
       <dom-bind>
         <template>
-          <iron-ajax auto url="../src/data.json" handle-as="json" last-response="{{users}}"></iron-ajax>
+          <iron-ajax auto url="http://10.117.189.1:4343/fetchRecords" handle-as="json" last-response="{{users}}"></iron-ajax>
       
-          <vaadin-grid items="[[users.result]]" column-reordering-allowed multi-sort>
+          <vaadin-grid items="[[users.exchangeRates]]" column-reordering-allowed multi-sort>
       
             <vaadin-grid-selection-column auto-select frozen> </vaadin-grid-selection-column>
       
@@ -61,14 +61,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <template class="header">
                 <vaadin-grid-sorter path="sell">Sell</vaadin-grid-sorter>
               </template>
-              <template>[[item.toSell]]</template>
+              <template>[[item.sell]]</template>
             </vaadin-grid-column>
       
             <vaadin-grid-column width="5em" flex-grow="2" resizable>
               <template class="header">
                 <vaadin-grid-sorter path="sell">Buy</vaadin-grid-sorter>
               </template>
-              <template>[[item.toBuy]]</template>
+              <template>[[item.buy]]</template>
             </vaadin-grid-column>
 
             <vaadin-grid-column width="5em" flex-grow="2" resizable>
@@ -97,6 +97,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <vaadin-grid-sorter path="time">Time</vaadin-grid-sorter>
               </template>
               <template>[[item.time]]</template>
+            </vaadin-grid-column>
+            <vaadin-grid-column width="5em" flex-grow="2" resizable>
+              <template class="header">
+                <vaadin-grid-sorter path="time">Status</vaadin-grid-sorter>
+              </template>
+              <template>[[item.status]]</template>
             </vaadin-grid-column>
           </vaadin-grid>
         </template>
