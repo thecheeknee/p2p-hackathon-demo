@@ -30,7 +30,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <h1>Order History</h1>
       <dom-bind>
         <template>
-          <iron-ajax auto url="http://10.117.189.1:4343/fetchRecords" handle-as="json" last-response="{{users}}"></iron-ajax>
+          <iron-ajax 
+              auto 
+              method="get"
+              url="http://10.117.189.144:8080/fetchRecords" 
+              handle-as="json" last-response="{{users}}">
+          </iron-ajax>
       
           <vaadin-grid items="[[users.exchangeRates]]" column-reordering-allowed multi-sort>
       
@@ -92,11 +97,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <template>[[item.country]]</template>
             </vaadin-grid-column>
 
-            <vaadin-grid-column width="5em" flex-grow="2" resizable>
+            <vaadin-grid-column width="7em" flex-grow="2" resizable>
               <template class="header">
                 <vaadin-grid-sorter path="time">Time</vaadin-grid-sorter>
               </template>
-              <template>[[item.time]]</template>
+              <template>
+                  [[item.time]]
+              </template>
             </vaadin-grid-column>
             <vaadin-grid-column width="5em" flex-grow="2" resizable>
               <template class="header">
@@ -114,6 +121,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     class DemoOrder extends Polymer.Element {
       static get is() { return 'demo-order'; }
+      getGridData(e){
+          debugger;
+          console.log(e.details.response);
+      }
+      unix_timestamp(t){
+        var dt = new Date(t*1000);
+        var d = dt.getDate();
+        var mm = dt.getMonth();
+        var yy = dt.getFullYear();
+        var hr = dt.getHours();
+        var m = "0" + dt.getMinutes();
+        var s = "0" + dt.getSeconds();
+        return d+'/'+mm+'/'+yy+' '+hr+ ':' + m.substr(-2) + ':' + s.substr(-2);  
+      }
+
+
     }
 
     window.customElements.define(DemoOrder.is, DemoOrder);
