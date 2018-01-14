@@ -1,0 +1,37 @@
+{
+    "result":[
+        {
+            "userId":"134256",
+            "from":"EUR",
+            "to":"GBP",
+            "toSell":"6000",
+            "toBuy":"5298.45",
+            "rate":"0.8862",
+            "fee" :"21EUR",
+            "country":"ES",
+            "time":"19-11-2017 10:27:44"
+        },
+        {
+            "userId":"134251",
+            "from":"EUR",
+            "to":"GBP",
+            "toSell":"4000",
+            "toBuy":"5298.45",
+            "rate":"0.8862",
+            "fee" :"21EUR",
+            "country":"ES",
+            "time":"09-10-2017 10:27:44"
+        },
+        {
+            "userId":"134250",
+            "from":"EUR",
+            "to":"GBP",
+            "toSell":"16000",
+            "toBuy":"5298.45",
+            "rate":"0.8862",
+            "fee" :"21EUR",
+            "country":"ES",
+            "time":"29-12-2017 10:27:44"
+        }
+    ]
+}

@@ -9,6 +9,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid-selection-column.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid-sorter.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="demo-order">
@@ -23,9 +27,81 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <div class="card">
       <div class="circle">1</div>
-      <h1>View One</h1>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.</p>
-      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
+      <h1>Order History</h1>
+      <dom-bind>
+        <template>
+          <iron-ajax auto url="../src/data.json" handle-as="json" last-response="{{users}}"></iron-ajax>
+      
+          <vaadin-grid items="[[users.result]]" column-reordering-allowed multi-sort>
+      
+            <vaadin-grid-selection-column auto-select frozen> </vaadin-grid-selection-column>
+      
+            <vaadin-grid-column width="9em" resizable>
+              <template class="header">
+                <vaadin-grid-sorter path="userId">User ID</vaadin-grid-sorter>
+              </template>
+              <template>[[item.userId]]</template>
+            </vaadin-grid-column>
+      
+            <vaadin-grid-column width="5em" resizable>
+              <template class="header">
+                <vaadin-grid-sorter path="from">From</vaadin-grid-sorter>
+              </template>
+              <template>[[item.from]]</template>
+            </vaadin-grid-column>
+      
+            <vaadin-grid-column width="5em" flex-grow="2" resizable>
+              <template class="header">
+                <vaadin-grid-sorter path="to">To</vaadin-grid-sorter>
+              </template>
+              <template>[[item.to]]</template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="5em" flex-grow="2" resizable>
+              <template class="header">
+                <vaadin-grid-sorter path="sell">Sell</vaadin-grid-sorter>
+              </template>
+              <template>[[item.toSell]]</template>
+            </vaadin-grid-column>
+      
+            <vaadin-grid-column width="5em" flex-grow="2" resizable>
+              <template class="header">
+                <vaadin-grid-sorter path="sell">Buy</vaadin-grid-sorter>
+              </template>
+              <template>[[item.toBuy]]</template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="5em" flex-grow="2" resizable>
+              <template class="header">
+                <vaadin-grid-sorter path="rate">Rate</vaadin-grid-sorter>
+              </template>
+              <template>[[item.rate]]</template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="5em" flex-grow="2" resizable>
+              <template class="header">
+                <vaadin-grid-sorter path="fee">Fee</vaadin-grid-sorter>
+              </template>
+              <template>[[item.fee]]</template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="5em" flex-grow="2" resizable>
+              <template class="header">
+                <vaadin-grid-sorter path="country">Country</vaadin-grid-sorter>
+              </template>
+              <template>[[item.country]]</template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="5em" flex-grow="2" resizable>
+              <template class="header">
+                <vaadin-grid-sorter path="time">Time</vaadin-grid-sorter>
+              </template>
+              <template>[[item.time]]</template>
+            </vaadin-grid-column>
+          </vaadin-grid>
+        </template>
+      </dom-bind>
+      
     </div>
   </template>
 
