@@ -9,6 +9,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="demo-add">
@@ -22,16 +30,100 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <div class="card">
-      <div class="circle">2</div>
-      <h1>View Two</h1>
-      <p>Ea duis bonorum nec, falli paulo aliquid ei eum.</p>
-      <p>Id nam odio natum malorum, tibique copiosae expetenda mel ea.Detracto suavitate repudiandae no eum. Id adhuc minim soluta nam.Id nam odio natum malorum, tibique copiosae expetenda mel ea.</p>
+      <h1>Add a new conversion order</h1>
+      <iron-form is="iron-form" id="addOrder">
+        <form>
+          <div class="formelement">
+            <paper-input name="userid" value="{{frmObj.userid}}" always-float-label label="Your User ID" error-message="UserID Required" required auto-validate allowed-pattern="[a-zA-Z0-9\.\_\-]"></paper-input>
+          </div>
+          <div class="formelement lfloat">
+            <paper-dropdown-menu label="From" on-iron-select="_fromCurrSelected" value="{{frmObj.from}}">
+              <paper-listbox slot="dropdown-content" name="from" selected="0">
+                  <template is="dom-repeat" items="{{currency}}">
+                      <paper-item>{{item}}</paper-item>
+                  </template>
+              </paper-listbox>
+            </paper-dropdown-menu>
+          </div>
+          <div class="formelement lfloat">
+            <paper-dropdown-menu label="To" on-iron-select="_currToSelected" value="{{frmObj.to}}">
+              <paper-listbox slot="dropdown-content" name="from" selected="0">
+                  <template is="dom-repeat" items="{{currency}}">
+                      <paper-item>{{item}}</paper-item>
+                  </template>
+              </paper-listbox>
+            </paper-dropdown-menu>
+          </div>
+          <div class="clear"></div>
+          <div class="formelement">
+              <paper-input name="amount" value="{{frmObj.toSell}}" always-float-label label="Amount to convert" error-message="Amount Value is required" required auto-validate allowed-pattern="[0-9]"></paper-input>
+            </div>
+          <div class="formelement">
+              <paper-dropdown-menu label="Your Country"  on-iron-select="_countrySelected" value="{{frmObj.origincountry}}">
+                <paper-listbox slot="dropdown-content" name="from" selected="0">
+                    <template is="dom-repeat" items="{{country}}">
+                        <paper-item value="{{item}}">{{item}}</paper-item>
+                    </template>
+                </paper-listbox>
+              </paper-dropdown-menu>
+            </div>
+            <div class="formelement">
+              <paper-button on-click="submitForm" raised>Submit</paper-button>
+            </div>
+        </form>
+      </iron-form>
     </div>
   </template>
 
   <script>
     class DemoAdd extends Polymer.Element {
       static get is() { return 'demo-add'; }
+      static get properties(){
+        return {
+          frmObj:{
+            type:Object,
+            value:{}
+          },
+          currency:{
+            type:Array,
+            value(){
+              return ["USD","GBP","EUR","INR","AUD"];
+            }
+          },
+          country:{
+            type:Array,
+            value(){
+              return ["ES","GE","UK","PT","FR","DC"];
+            }
+          }
+        }
+      }
+      _fromCurrSelected(e) {
+        var selectedItem = e.target.selectedItem;
+        if (selectedItem) {
+            this.frmObj.from = selectedItem.innerText;
+        }
+        console.log(this.frmObj.from);
+      }
+      _currToSelected(e) {
+        var selectedItem = e.target.selectedItem;
+        if (selectedItem) {
+            this.frmObj.to = selectedItem.innerText;
+        }
+      }
+      _countrySelected(e) {
+        var selectedItem = e.target.selectedItem;
+        if (selectedItem) {
+            this.frmObj.origincountry = selectedItem.value;
+        }
+      }
+      submitForm(){
+        if(this.$.addOrder.validate()){
+            console.log( this.frmObj );
+        }else{
+            console.log(false);
+        }
+      }
     }
 
     window.customElements.define(DemoAdd.is, DemoAdd);
